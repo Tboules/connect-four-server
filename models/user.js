@@ -3,7 +3,9 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   userName: String,
-  dob: Date,
+  passWord: String,
+  playerColor: String,
+  gameInstance: Number,
 });
 
 module.exports = mongoose.model("user", userSchema);
