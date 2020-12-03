@@ -20,20 +20,40 @@ router.get("/users", async (req, res) => {
   res.send(users);
 });
 
+router.post("/users/validate", async (req, res) => {
+  const checkUser = await User.findOne({
+    userName: req.body.userName,
+    passWord: req.body.passWord,
+  });
+  if (!checkUser) {
+    res.status(400).json({
+      error: "The username or password either or incorrect or do not exist",
+      success: false,
+    });
+  } else {
+    res.json(checkUser);
+  }
+});
+
 router.get("/users/:id", getUser, async (req, res) => {
   res.send(res.user);
 });
 
 router.post("/users", async (req, res) => {
   const { userName, passWord, playerColor, gameInstance } = req.body;
-  const user = new User({
-    userName,
-    passWord,
-    playerColor,
-    gameInstance,
-  });
-  await user.save();
-  res.send(user);
+  const checkUser = await User.findOne({ userName: req.body.userName });
+  if (checkUser) {
+    return res.status(400).json("That user already exists");
+  } else {
+    const user = new User({
+      userName,
+      passWord,
+      playerColor,
+      gameInstance,
+    });
+    await user.save();
+    res.send(user);
+  }
 });
 
 router.patch("/users/:id", getUser, async (req, res) => {
