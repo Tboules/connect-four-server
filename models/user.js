@@ -5,7 +5,7 @@ const userSchema = new Schema({
   userName: String,
   passWord: String,
   playerColor: String,
-  gameInstance: Number,
+  gameInstance: String,
 });
 
 module.exports = mongoose.model("user", userSchema);

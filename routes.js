@@ -74,4 +74,18 @@ router.patch("/users/:id", getUser, async (req, res) => {
   }
 });
 
+router.post("/users/checkGame", async (req, res) => {
+  const checkGame = await User.find({
+    gameInstance: req.body.gameInstance,
+  });
+  try {
+    res.json({
+      games: checkGame,
+      number: checkGame.length,
+    });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 module.exports = router;
