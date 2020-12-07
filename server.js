@@ -33,9 +33,15 @@ app.use("/gameApi", gameRoutes);
 io.on("connection", (socket) => {
   const { roomId } = socket.handshake.query;
   socket.join(roomId);
+  socket.on("joinEvent", (data) => {
+    io.in(roomId).emit("joinEvent", data);
+  });
 
   socket.on("chatEvent", (data) => {
     io.in(roomId).emit("chatEvent", data);
+  });
+  socket.on("boardEvent", (data) => {
+    io.in(roomId).emit("boardEvent", data);
   });
 });
 

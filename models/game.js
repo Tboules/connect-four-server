@@ -6,14 +6,10 @@ const messageSchema = new Schema({
   message: String,
 });
 
-const rowSchema = new Schema({
-  rows: [String],
-});
-
 const gameSchema = new Schema({
-  gameInstance: Number,
+  gameInstance: String,
   messages: [messageSchema],
-  gameBoard: [rowSchema],
+  gameBoard: Schema.Types.Mixed,
 });
 
 module.exports = mongoose.model("game", gameSchema, "game");
