@@ -5,8 +5,6 @@ const mongoose = require("mongoose");
 const routes = require("./routes");
 const gameRoutes = require("./gameRoutes");
 
-const PORT = 3001;
-
 const app = express();
 app.use(cors());
 const http = require("http");
@@ -45,4 +43,11 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(PORT, () => console.log(`I'm listening on port ${PORT} `));
+//serve static assets if in prod
+// if(process.env.NODE_ENV === 'production') {
+//   app.use(express.static('../connect-four/build'))
+// }
+
+server.listen(process.env.PORT, () =>
+  console.log(`I'm listening on port ${process.env.PORT} `)
+);
