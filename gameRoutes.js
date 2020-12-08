@@ -21,7 +21,7 @@ router.post("/getGame", async (req, res) => {
 });
 
 router.post("/newGame", async (req, res) => {
-  const { gameInstance, messages, gameBoard } = req.body;
+  const { gameInstance, messages, gameBoard, lastTile } = req.body;
   const checkGame = await Game.findOne({ gameInstance: gameInstance });
   try {
     if (checkGame) {
@@ -31,6 +31,7 @@ router.post("/newGame", async (req, res) => {
         gameInstance,
         messages,
         gameBoard,
+        lastTile,
       });
       await game.save();
       res.send(game);
@@ -41,13 +42,16 @@ router.post("/newGame", async (req, res) => {
 });
 
 router.patch("/updateGame", async (req, res) => {
-  const { gameInstance, messages, gameBoard } = req.body;
+  const { gameInstance, messages, gameBoard, lastTile } = req.body;
   const checkGame = await Game.findOne({ gameInstance: gameInstance });
   if (messages) {
-    checkGame.messages = messages;
+    checkGame.messages = [...checkGame.messages, ...messages];
   }
   if (gameBoard) {
     checkGame.gameBoard = gameBoard;
+  }
+  if (lastTile) {
+    checkGame.lastTile = lastTile;
   }
   try {
     if (!checkGame) {
@@ -58,6 +62,16 @@ router.patch("/updateGame", async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ messages: err.message });
+  }
+});
+
+router.delete("/deleteGame", async (req, res) => {
+  const checkGame = await Game.findOne({ gameInstance: req.body.gameInstance });
+  if (checkGame) {
+    checkGame.remove();
+    res.json({ message: "Deleted Game" });
+  } else {
+    res.status(400).json({ message: "Could not find that game" });
   }
 });
 

@@ -31,9 +31,8 @@ router.post("/users/validate", async (req, res) => {
       error: "The username or password either or incorrect or do not exist",
       success: false,
     });
-  } else {
-    res.json(checkUser);
   }
+  res.json(checkUser);
 });
 
 router.get("/users/:id", getUser, async (req, res) => {
