@@ -44,17 +44,19 @@ io.on("connection", (socket) => {
   });
 });
 
-// serve static assets if in prod
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("../connect-four/build"));
+// // serve static assets if in prod
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static("../connect-four/build"));
 
-  app.get("*", (req, res) => {
-    res.sendFile(
-      path.resolve(__dirname, "connect-four", "build", "index.html")
-    );
-  });
-}
+//   app.get("*", (req, res) => {
+//     res.sendFile(
+//       path.resolve(__dirname, "connect-four", "build", "index.html")
+//     );
+//   });
+// }
 
-server.listen(process.env.PORT, () =>
+server.listen(process.env.PORT || 3001, () =>
   console.log(`I'm listening on port ${process.env.PORT} `)
 );
+
+// "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix connect-four && npm run build --prefix connect-four"
