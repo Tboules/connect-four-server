@@ -24,7 +24,9 @@ mongoose.connect(process.env.DATABASE_URL, {
 mongoose.connection.once("open", () => {
   console.log("db working");
 });
-
+app.get("/", (req, res) => {
+  res.send("We are up and running");
+});
 app.use(express.json());
 app.use("/api", routes);
 app.use("/gameApi", gameRoutes);
