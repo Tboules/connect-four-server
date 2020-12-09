@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const routes = require("./routes");
 const gameRoutes = require("./gameRoutes");
+const path = require("path");
 
 const app = express();
 app.use(cors());
@@ -43,10 +44,16 @@ io.on("connection", (socket) => {
   });
 });
 
-//serve static assets if in prod
-// if(process.env.NODE_ENV === 'production') {
-//   app.use(express.static('../connect-four/build'))
-// }
+// serve static assets if in prod
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("../connect-four/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname, "connect-four", "build", "index.html")
+    );
+  });
+}
 
 server.listen(process.env.PORT, () =>
   console.log(`I'm listening on port ${process.env.PORT} `)
