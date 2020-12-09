@@ -25,7 +25,7 @@ mongoose.connection.once("open", () => {
   console.log("db working");
 });
 app.get("/", (req, res) => {
-  res.send("We are up and running");
+  res.send("We are up ");
 });
 app.use(express.json());
 app.use("/api", routes);
